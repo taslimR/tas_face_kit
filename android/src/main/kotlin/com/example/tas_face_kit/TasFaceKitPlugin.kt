@@ -31,19 +31,19 @@ class TasFaceKitPlugin: FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(this)
   }
 
-  @RequiresApi(Build.VERSION_CODES.KITKAT)
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
       if (call.method == "findFaces") {
         val path = call.argument<String>("path")
 
         val bmOptions = BitmapFactory.Options()
+          bmOptions.inPreferredConfig = Bitmap.Config.RGB_565
         val bitmap = BitmapFactory.decodeFile(path, bmOptions)
-//     background_image = convert(bitmap, bitmap.width, bitmap.height, Bitmap.Config.RGB_565)
+//     background_image = convert(bitmap, Bitmap.Config.RGB_565)
           bitmap ?.let {
         Log.d("AAP", "Inside bitmap")
 //           it.config = Bitmap.Config.RGB_565
         val face_detector = FaceDetector(
-                bitmap.getWidth(), bitmap.getHeight(),
+                it.getWidth(), it.getHeight(),
                 MAX_FACES
         )
         faces = arrayOfNulls(MAX_FACES)
@@ -58,11 +58,11 @@ class TasFaceKitPlugin: FlutterPlugin, MethodCallHandler {
     }
   }
 
-  private fun convert(bitmap: Bitmap, width: Int, height: Int, config: Bitmap.Config): Bitmap? {
-    val min = if (width < height) width else height
-    val convertedBitmap = Bitmap.createBitmap(min, min, config)
-    return convertedBitmap
-  }
+//  private fun convert(bitmap: Bitmap, config: Bitmap.Config): Bitmap? {
+//    val min = if (width < height) width else height
+//    val convertedBitmap = Bitmap.createBitmap(min, min, config)
+//    return convertedBitmap
+//  }
 
   companion object {
     private const val MAX_FACES = 10
