@@ -41,9 +41,9 @@ class TasFaceKitPlugin: FlutterPlugin, MethodCallHandler {
      background_image = convert(bitmap, bitmap.width, bitmap.height, Bitmap.Config.RGB_565)
         bitmap?.let {
         Log.d("AAP", "Inside bitmap")
-           it.config = Bitmap.Config.RGB_565
+//           it.config = Bitmap.Config.RGB_565
         val face_detector = FaceDetector(
-                it.getWidth(), it.getHeight(),
+                bitmap.getWidth(), bitmap.getHeight(),
                 MAX_FACES
         )
         faces = arrayOfNulls(MAX_FACES)
