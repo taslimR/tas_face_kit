@@ -39,7 +39,7 @@ class TasFaceKitPlugin: FlutterPlugin, MethodCallHandler {
         val bmOptions = BitmapFactory.Options()
         val bitmap = BitmapFactory.decodeFile(path, bmOptions)
      background_image = convert(bitmap, bitmap.width, bitmap.height, Bitmap.Config.RGB_565)
-        bitmap?.let {
+          background_image?.let {
         Log.d("AAP", "Inside bitmap")
 //           it.config = Bitmap.Config.RGB_565
         val face_detector = FaceDetector(
