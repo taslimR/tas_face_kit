@@ -9,7 +9,7 @@ void main() {
 
   setUp(() {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return '42';
+      return '2';
     });
   });
 
@@ -17,7 +17,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('getPlatformVersion', () async {
-    expect(await TasFaceKit.platformVersion, '42');
+  test('findFaces', () async {
+    expect(await TasFaceKit.detectFaces("imagePath"), '2');
   });
 }

@@ -1,14 +1,13 @@
-
 import 'dart:async';
 
 import 'package:flutter/services.dart';
 
 class TasFaceKit {
-  static const MethodChannel _channel =
-      const MethodChannel('tas_face_kit');
+  static const MethodChannel _channel = const MethodChannel('tas_face_kit');
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
+  static Future<int> detectFaces(String imagePath) async {
+    final int version =
+        await _channel.invokeMethod('findFaces', {"path": imagePath});
     return version;
   }
 }
