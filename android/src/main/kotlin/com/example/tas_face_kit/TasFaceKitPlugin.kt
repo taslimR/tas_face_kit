@@ -3,8 +3,10 @@ package com.example.tas_face_kit
 import android.graphics.*
 import android.graphics.Color.convert
 import android.media.FaceDetector
+import android.os.Build
 import android.util.Log
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -29,16 +31,17 @@ class TasFaceKitPlugin: FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(this)
   }
 
+  @RequiresApi(Build.VERSION_CODES.KITKAT)
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
       if (call.method == "findFaces") {
         val path = call.argument<String>("path")
 
         val bmOptions = BitmapFactory.Options()
         val bitmap = BitmapFactory.decodeFile(path, bmOptions)
-      background_image = convert(bitmap, bitmap.width, bitmap.height, Bitmap.Config.RGB_565)
-      background_image?.let {
+     background_image = convert(bitmap, bitmap.width, bitmap.height, Bitmap.Config.RGB_565)
+        bitmap?.let {
         Log.d("AAP", "Inside bitmap")
-//            it.config = Bitmap.Config.RGB_565
+           it.config = Bitmap.Config.RGB_565
         val face_detector = FaceDetector(
                 it.getWidth(), it.getHeight(),
                 MAX_FACES
