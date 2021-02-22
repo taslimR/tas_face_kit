@@ -38,8 +38,8 @@ class TasFaceKitPlugin: FlutterPlugin, MethodCallHandler {
 
         val bmOptions = BitmapFactory.Options()
         val bitmap = BitmapFactory.decodeFile(path, bmOptions)
-     background_image = convert(bitmap, bitmap.width, bitmap.height, Bitmap.Config.RGB_565)
-          background_image?.let {
+//     background_image = convert(bitmap, bitmap.width, bitmap.height, Bitmap.Config.RGB_565)
+          bitmap ?.let {
         Log.d("AAP", "Inside bitmap")
 //           it.config = Bitmap.Config.RGB_565
         val face_detector = FaceDetector(
@@ -48,7 +48,7 @@ class TasFaceKitPlugin: FlutterPlugin, MethodCallHandler {
         )
         faces = arrayOfNulls(MAX_FACES)
         // The bitmap must be in 565 format (for now).
-        face_count = face_detector.findFaces(background_image, faces)
+        face_count = face_detector.findFaces(bitmap, faces)
         Log.d("Face_Detection", "Face Count: $face_count")
       }
 
