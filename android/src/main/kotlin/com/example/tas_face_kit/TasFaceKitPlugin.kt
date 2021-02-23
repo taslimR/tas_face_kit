@@ -64,7 +64,7 @@ class TasFaceKitPlugin : FlutterPlugin, MethodCallHandler {
 //  }
 
     companion object {
-        private const val MAX_FACES = 10
+        private const val MAX_FACES = 2
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
