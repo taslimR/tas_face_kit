@@ -22,9 +22,6 @@ class TasFaceKitPlugin : FlutterPlugin, MethodCallHandler {
     /// when the Flutter Engine is detached from the Activity
     private lateinit var channel: MethodChannel
 
-    private var background_image: Bitmap? = null
-
-
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tas_face_kit")
         channel.setMethodCallHandler(this)
@@ -38,10 +35,8 @@ class TasFaceKitPlugin : FlutterPlugin, MethodCallHandler {
             val bmOptions = BitmapFactory.Options()
             bmOptions.inPreferredConfig = Bitmap.Config.RGB_565
             val bitmap = BitmapFactory.decodeFile(path, bmOptions)
-//     background_image = convert(bitmap, Bitmap.Config.RGB_565)
             bitmap?.let {
                 Log.d("AAP", "Inside bitmap")
-//           it.config = Bitmap.Config.RGB_565
                 val face_detector = FaceDetector(
                         it.getWidth(), it.getHeight(),
                         MAX_FACES
@@ -50,8 +45,8 @@ class TasFaceKitPlugin : FlutterPlugin, MethodCallHandler {
                 // The bitmap must be in 565 format (for now).
                 face_count = face_detector.findFaces(bitmap, faces)
                 Log.d("Face_Detection", "Face Count: $face_count")
-                for (i in 0 until face_count) {
-                    if (faces[i]!!.confidence() > 0.5) {
+                for (face in faces) {
+                    if (face != null && face.confidence() > 0.5) {
                         confidentFaceCount++
                     }
                 }
@@ -63,14 +58,8 @@ class TasFaceKitPlugin : FlutterPlugin, MethodCallHandler {
         }
     }
 
-//  private fun convert(bitmap: Bitmap, config: Bitmap.Config): Bitmap? {
-//    val min = if (width < height) width else height
-//    val convertedBitmap = Bitmap.createBitmap(min, min, config)
-//    return convertedBitmap
-//  }
-
     companion object {
-        private const val MAX_FACES = 2
+        private const val MAX_FACES = 10
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {

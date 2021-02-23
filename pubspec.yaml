@@ -1,6 +1,6 @@
 name: tas_face_kit
 description: A new flutter plugin for face.
-version: 0.1.2
+version: 0.1.3
 homepage: https://github.com/taslimR/tas_face_kit
 
 environment:
