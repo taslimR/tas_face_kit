@@ -49,14 +49,14 @@ class TasFaceKitPlugin : FlutterPlugin, MethodCallHandler {
               var faces: Array<FaceDetector.Face?> = arrayOfNulls(MAX_FACES)
                 // The bitmap must be in 565 format (for now).
                 face_count = face_detector.findFaces(bitmap, faces)
-                Log.d("Face_Detection", "Face Count: $face_count . Path: $path")
+                Log.d("Face_Detection", "Face Count: $face_count")
                 for (i in 0 until face_count) {
                     if (faces[i]!!.confidence() > 0.75) {
                         confidentFaceCount++
                     }
                 }
             }
-
+            Log.d("confidentFaceCount", "Count: $confidentFaceCount")
             result.success(confidentFaceCount)
         } else {
             result.notImplemented()
