@@ -34,6 +34,7 @@ class TasFaceKitPlugin : FlutterPlugin, MethodCallHandler {
         if (call.method == "findFaces") {
             val path = call.argument<String>("path")
             var face_count = 0
+            var confidentFaceCount = 0
             val bmOptions = BitmapFactory.Options()
             bmOptions.inPreferredConfig = Bitmap.Config.RGB_565
             val bitmap = BitmapFactory.decodeFile(path, bmOptions)
@@ -49,9 +50,14 @@ class TasFaceKitPlugin : FlutterPlugin, MethodCallHandler {
                 // The bitmap must be in 565 format (for now).
                 face_count = face_detector.findFaces(bitmap, faces)
                 Log.d("Face_Detection", "Face Count: $face_count . Path: $path")
+                for (i in 0 until face_count) {
+                    if (faces[i]!!.confidence() > 0.5) {
+                        confidentFaceCount++
+                    }
+                }
             }
 
-            result.success(face_count)
+            result.success(confidentFaceCount)
         } else {
             result.notImplemented()
         }
