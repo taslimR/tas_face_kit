@@ -51,7 +51,7 @@ class TasFaceKitPlugin : FlutterPlugin, MethodCallHandler {
                 face_count = face_detector.findFaces(bitmap, faces)
                 Log.d("Face_Detection", "Face Count: $face_count")
                 for (i in 0 until face_count) {
-                    if (faces[i]!!.confidence() > 0.75) {
+                    if (faces[i]!!.confidence() > 0.5) {
                         confidentFaceCount++
                     }
                 }
