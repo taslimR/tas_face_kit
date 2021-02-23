@@ -15,48 +15,47 @@ import io.flutter.plugin.common.MethodChannel.Result
 
 
 /** TasFaceKitPlugin */
-class TasFaceKitPlugin: FlutterPlugin, MethodCallHandler {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  private lateinit var channel : MethodChannel
+class TasFaceKitPlugin : FlutterPlugin, MethodCallHandler {
+    /// The MethodChannel that will the communication between Flutter and native Android
+    ///
+    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
+    /// when the Flutter Engine is detached from the Activity
+    private lateinit var channel: MethodChannel
 
-  private var background_image: Bitmap? = null
-  private lateinit var faces: Array<FaceDetector.Face?>
-  private var face_count = 0
+    private var background_image: Bitmap? = null
 
-  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tas_face_kit")
-    channel.setMethodCallHandler(this)
-  }
 
-  override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-      if (call.method == "findFaces") {
-        val path = call.argument<String>("path")
-
-        val bmOptions = BitmapFactory.Options()
-          bmOptions.inPreferredConfig = Bitmap.Config.RGB_565
-        val bitmap = BitmapFactory.decodeFile(path, bmOptions)
-//     background_image = convert(bitmap, Bitmap.Config.RGB_565)
-          bitmap ?.let {
-        Log.d("AAP", "Inside bitmap")
-//           it.config = Bitmap.Config.RGB_565
-        val face_detector = FaceDetector(
-                it.getWidth(), it.getHeight(),
-                MAX_FACES
-        )
-        faces = arrayOfNulls(MAX_FACES)
-        // The bitmap must be in 565 format (for now).
-        face_count = face_detector.findFaces(bitmap, faces)
-        Log.d("Face_Detection", "Face Count: $face_count")
-      }
-
-      result.success(face_count)
-    } else {
-      result.notImplemented()
+    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tas_face_kit")
+        channel.setMethodCallHandler(this)
     }
-  }
+
+    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+        if (call.method == "findFaces") {
+            val path = call.argument<String>("path")
+            var face_count = 0
+            val bmOptions = BitmapFactory.Options()
+            bmOptions.inPreferredConfig = Bitmap.Config.RGB_565
+            val bitmap = BitmapFactory.decodeFile(path, bmOptions)
+//     background_image = convert(bitmap, Bitmap.Config.RGB_565)
+            bitmap?.let {
+                Log.d("AAP", "Inside bitmap")
+//           it.config = Bitmap.Config.RGB_565
+                val face_detector = FaceDetector(
+                        it.getWidth(), it.getHeight(),
+                        MAX_FACES
+                )
+              var faces: Array<FaceDetector.Face?> = arrayOfNulls(MAX_FACES)
+                // The bitmap must be in 565 format (for now).
+                face_count = face_detector.findFaces(bitmap, faces)
+                Log.d("Face_Detection", "Face Count: $face_count . Path: $path")
+            }
+
+            result.success(face_count)
+        } else {
+            result.notImplemented()
+        }
+    }
 
 //  private fun convert(bitmap: Bitmap, config: Bitmap.Config): Bitmap? {
 //    val min = if (width < height) width else height
@@ -64,11 +63,11 @@ class TasFaceKitPlugin: FlutterPlugin, MethodCallHandler {
 //    return convertedBitmap
 //  }
 
-  companion object {
-    private const val MAX_FACES = 10
-  }
+    companion object {
+        private const val MAX_FACES = 10
+    }
 
-  override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
-  }
+    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+        channel.setMethodCallHandler(null)
+    }
 }
